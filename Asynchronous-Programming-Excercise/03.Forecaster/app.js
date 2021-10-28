@@ -9,16 +9,20 @@ function attachEvents() {
 	let symbol;
 	getBtn.addEventListener("click", (e) => {
 		e.preventDefault();
-
+		Array.from(currentSection.querySelectorAll("div")).forEach((el, index) => {
+			index !== 0 ? el.remove() : el;
+		});
+		Array.from(upcommingSection.querySelectorAll("div")).forEach((el, index) => {
+			index !== 0 ? el.remove() : el;
+		});
 		fetch(`http://localhost:3030/jsonstore/forecaster/locations`)
 			.then((res) => res.json())
 			.then((locations) => {
 				let currentLocation = locations.find((l) => l["name"] === location.value);
 				let currentCode = currentLocation["code"];
-				fetch(`http://localhost:3030/jsonstore/forecaster/today/${currentCode}`)
+				let currentWeather = fetch(`http://localhost:3030/jsonstore/forecaster/today/${currentCode}`)
 					.then((res) => res.json())
 					.then((data) => {
-						forecastSection.style.display = "block";
 						let forecastDiv = creatElement("div", null, currentSection, "forecasts");
 						let conditionSymbol = creatElement("span", null, forecastDiv, "condition");
 						conditionSymbol.classList.add("symbol");
@@ -42,12 +46,8 @@ function attachEvents() {
 						let temperature = creatElement("span", null, conditionSpan, "forecast-data");
 						temperature.innerHTML = `${data["forecast"]["low"]}${degrees}/${data["forecast"]["high"]}${degrees}`;
 						let weatherSpan = creatElement("span", data["forecast"]["condition"], conditionSpan);
-					})
-					.catch((err) => {
-						currentSection.textContent = "Error";
-						forecastSection.style.display = "block";
 					});
-				fetch(`http://localhost:3030/jsonstore/forecaster/upcoming/${currentCode}`)
+				let upcomingWeather = fetch(`http://localhost:3030/jsonstore/forecaster/upcoming/${currentCode}`)
 					.then((res) => res.json())
 					.then((data) => {
 						let forecastDiv = creatElement("div", null, upcommingSection, "forecast-info");
@@ -71,13 +71,20 @@ function attachEvents() {
 							symbolSpan.innerHTML = symbol;
 							let temperature = creatElement("span", null, upcomingSpan, "forecast-data");
 							temperature.innerHTML = `${day["low"]}${degrees}/${day["high"]}${degrees}`;
-                            let weatherSpan = creatElement("span", day["condition"], upcomingSpan);
+							let weatherSpan = creatElement("span", day["condition"], upcomingSpan);
 						});
 					});
+				Promise.all([currentWeather, upcomingWeather]).then((x) => {
+					forecastSection.style.display = "block";
+					document.querySelector("#current > div:nth-child(1)").style.display = "block";
+					document.querySelector("#upcoming > div").style.display = "block";
+				});
 			})
 			.catch((err) => {
-				currentSection.textContent = "Error";
 				forecastSection.style.display = "block";
+				document.querySelector("#current > div:nth-child(1)").style.display = "none";
+				document.querySelector("#upcoming > div").style.display = "none";
+				let errorDiv = creatElement("div", "Error", currentSection, "label");
 			});
 	});
 	function creatElement(type, content, parrent, className) {
