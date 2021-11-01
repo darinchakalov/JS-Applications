@@ -20,17 +20,17 @@ function onLogin(data) {
 		body: JSON.stringify(body),
 	})
 		.then((response) => {
-            if (response.status == 200) {
-                response.json().then(data => {
-                    sessionStorage.setItem('authToken', data.accessToken)
-                    window.location.pathname = 'Remote-Data-and-Authentication-Lab/index.html'
-                })
-            } else {
-                response.json().then(data => {
-                    console.log(data.message);
-                });
-            }
-        })
+			if (response.status == 200) {
+				response.json().then((data) => {
+					sessionStorage.setItem("authToken", data.accessToken);
+					window.location.pathname = "Remote-Data-and-Authentication-Lab/index.html";
+				});
+			} else {
+				response.json().then((data) => {
+					console.log(data.message);
+				});
+			}
+		})
 		.catch((error) => {
 			console.error("Error:", error);
 		});
