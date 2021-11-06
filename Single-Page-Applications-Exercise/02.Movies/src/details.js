@@ -66,8 +66,6 @@ function detailsRender(data) {
 			onEdit(e.target.getAttribute("data-id"));
 		});
 	} else if (sessionStorage.getItem("authToken") && sessionStorage.getItem("userID") !== data["_ownerId"]) {
-		// IF user liked create span
-		// ELSE create like button and on like replace with span
 		fetch(
 			`http://localhost:3030/data/likes?where=movieId%3D%22${
 				data["_id"]
