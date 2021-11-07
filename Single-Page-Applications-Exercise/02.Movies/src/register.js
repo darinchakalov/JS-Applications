@@ -18,6 +18,7 @@ function registerUser() {
 		let formData = new FormData(e.currentTarget);
 
 		registration(formData);
+		e.currentTarget.reset()
 	});
 }
 

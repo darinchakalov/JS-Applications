@@ -4,11 +4,7 @@ import logout from "./logout.js";
 import register from "./register.js";
 import addMovie from './addMovie.js'
 
-/* TODO
-Edit movie
-Delete movie
-Like movie
-*/
+
 
 window.addEventListener("load", () => {
 	home.showPage()
