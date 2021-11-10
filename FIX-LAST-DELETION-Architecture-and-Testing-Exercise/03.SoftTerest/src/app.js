@@ -1,34 +1,47 @@
-import createPage from "./pages/createPage.js";
-import dashboardPage from "./pages/dashboardPage.js";
-import homePage from "./pages/homePage.js";
-import loginPage from "./pages/loginPage.js";
-import registerPage from "./pages/registerPage.js";
-import viewChanger from "./handlers/viewChanger.js";
-import elements from "./elements.js";
-import detailsPage from "./pages/detailsPage.js";
-import authentication from "./handlers/authentication.js";
+import { removeAuthenticationData, setMenu } from "./authentication.js";
+import { showCreatePage } from "./pages/createPage.js";
+import { showDashPage } from "./pages/dashPage.js";
+import { showHomePage } from "./pages/homePage.js";
+import { showLoginPage } from "./pages/loginPage.js";
+import { showRegisterPage } from "./pages/registerPage.js";
+import userServices from "./services/userServices.js";
 
-setup();
+const logoutBtn = document.querySelector("#logoutBtn");
+const navBar = document.querySelector(".navbar");
+navBar.addEventListener("click", onNavigate);
+logoutBtn.addEventListener("click", onLogout);
 
-async function setup() {
-	authentication.setMenu();
-	
-	//Get the main div containing all the sections
-	let viewsSection = document.querySelector("#view-section");
+const sections = {
+	homeBtn: showHomePage,
+	dashBtn: showDashPage,
+	createBtn: showCreatePage,
+	loginBtn: showLoginPage,
+	registerBtn: showRegisterPage,
+};
 
-	//Get all sections
-	homePage.setSection(document.querySelector("#home"));
-	loginPage.setSection(document.querySelector("#login"));
-	registerPage.setSection(document.querySelector("#register"));
-	createPage.setSection(document.querySelector("#create"));
-	dashboardPage.setSection(document.querySelector("#dashboard-holder"));
-	detailsPage.setSection(document.querySelector('#details'))
-	viewChanger.initiliaze();
+setMenu();
+showHomePage();
 
-	//Show the home section
-	let homePageSection = await homePage.getView();
-	elements.showCurrentView(homePageSection);
+document.querySelector("body > nav > div > a");
+function onNavigate(e) {
+	e.preventDefault();
+	if (e.target.tagName === "A" || e.target.parentNode.tagName === "A") {
+		let currentBtn = e.target.id;
+		if (e.target.tagName === "IMG") {
+			currentBtn = e.target.parentNode.id;
+		}
+		const view = sections[currentBtn];
+		if (typeof view === "function") {
+			view();
+		}
+	}
+}
 
-	let logoutBtn = document.querySelector('#logout-link')
-	logoutBtn.addEventListener('click', authentication.onLogout)
+async function onLogout(e) {
+	e.preventDefault();
+	let data = await userServices.logoutRequest()
+	if (data !== undefined) {
+	    removeAuthenticationData()
+	    setMenu()
+	}
 }

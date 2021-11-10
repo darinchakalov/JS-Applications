@@ -1,39 +1,30 @@
-import elements from "../elements.js";
-import registrationCall from "../services/registerService.js";
-import homePage from "./homePage.js";
-import authectication from '../handlers/authentication.js'
+import { setAuthenticationData, setMenu } from "../authentication.js";
+import { showSection } from "../elements/dom.js";
+import userServices from "../services/userServices.js";
+import { showHomePage } from "./homePage.js";
 
-let section;
+const registerPage = document.querySelector("#register");
+const form = registerPage.querySelector("form");
+form.addEventListener("submit", onSubmit);
 
-function setSection(domElement) {
-	section = domElement;
-}
-
-async function getView() {
-	return section;
-}
-
-onRegister();
-async function onRegister() {
-	const registrationForm = document.querySelector("#register > div > form");
-	registrationForm.addEventListener("submit", onSubmit);
+export function showRegisterPage() {
+	showSection(registerPage);
 }
 
 async function onSubmit(e) {
 	e.preventDefault();
-	let regData = new FormData(e.currentTarget);
-	let response = registrationCall(regData);
-	if (authectication.getToken() !== null) {
-		e.currentTarget.reset();
-		elements.showCurrentView(await homePage.getView());
-	} else {
-        return alert(await response)
-    }
+	const formData = new FormData(e.currentTarget);
+	if (formData.get("password") !== formData.get("repeatPassword")) {
+		return alert(`Passwords should match`);
+	}
+	const registerData = {
+		email: formData.get("email"),
+		password: formData.get("password"),
+	};
+	let data = await userServices.registerRequest(registerData)
+	if (data !== undefined) {
+		setAuthenticationData(data)
+		setMenu()
+		showHomePage()
+	}
 }
-
-let registerPage = {
-	setSection,
-	getView,
-};
-
-export default registerPage;

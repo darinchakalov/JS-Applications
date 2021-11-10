@@ -1,35 +1,28 @@
-import elements from "../elements.js";
-import authentication from "../handlers/authentication.js";
-import loginCall from "../services/loginService.js";
-import homePage from "./homePage.js";
+import { setAuthenticationData, setMenu } from "../authentication.js";
+import { showSection } from "../elements/dom.js";
+import userServices from "../services/userServices.js";
+import { showHomePage } from "./homePage.js";
 
-let section;
 
-function setSection(domElement) {
-	section = domElement;
-}
+const loginPage = document.querySelector("#login");
+const loginForm = loginPage.querySelector("form");
+loginForm.addEventListener("submit", onSubmit);
 
-async function getView() {
-	return section;
-}
-
-onLogin();
-async function onLogin() {
-	const loginForm = document.querySelector("#login > div > form");
-	loginForm.addEventListener("submit", onSubmit);
+export function showLoginPage() {
+	showSection(loginPage);
 }
 
 async function onSubmit(e) {
 	e.preventDefault();
-	let loginData = new FormData(e.currentTarget);
-	let response = loginCall(loginData);
-	e.currentTarget.reset();
-	elements.showCurrentView(await homePage.getView());
+	const formData = new FormData(e.currentTarget);
+	const loginData = {
+		email: formData.get("email"),
+		password: formData.get("password"),
+	};
+	let data = await userServices.loginRequest(loginData)
+	if (data !== undefined) {
+		setAuthenticationData(data)
+		setMenu()
+		showHomePage()
+	}
 }
-
-let loginPage = {
-	setSection,
-	getView,
-};
-
-export default loginPage;

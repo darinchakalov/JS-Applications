@@ -1,19 +1,7 @@
-import authentication from "../handlers/authentication.js";
+import { showSection } from "../elements/dom.js"
 
-let section;
+const homePage = document.querySelector('#home')
 
-function setSection(domElement) {
-	section = domElement;
+export function showHomePage() {
+	showSection(homePage)
 }
-
-async function getView() {
-	authentication.setMenu()
-	return section;
-}
-
-let homePage = {
-	setSection,
-	getView,
-};
-
-export default homePage;

@@ -1,34 +1,25 @@
-import elements from '../elements.js';
-import createCall from '../services/createService.js'
-import dashboardPage from './dashboardPage.js'
+import { showSection } from "../elements/dom.js"
+import { createIdea } from "../services/ideasServices.js"
+import { showDashPage } from "./dashPage.js"
 
-let section;
+const createPage = document.querySelector('#create')
+let form = createPage.querySelector('form')
+form.addEventListener('submit', onCreate)
 
-function setSection(domElement) {
-	section = domElement;
+export function showCreatePage() {
+	showSection(createPage)
 }
 
-async function getView() {
-	return section;
-}
-
-create()
-function create(){
-	let createForm = document.querySelector("#create > div > form")
-	createForm.addEventListener('submit', onSubmit)
-}
-
-async function onSubmit(e) {
+async function onCreate(e) {
 	e.preventDefault()
-	let createData = new FormData(e.currentTarget)
-	let response = await createCall(createData);
-	e.target.reset();
-	elements.showCurrentView(await dashboardPage.getView());
+	let formData = new FormData(e.currentTarget)
+	let idea = {
+		title: formData.get('title'),
+		description: formData.get('description'),
+		img: formData.get('imageURL')
+	}
+	let response = await createIdea(idea)
+	if (response !== undefined) {
+		showDashPage()
+	}
 }
-
-let createPage = {
-	setSection,
-	getView,
-};
-
-export default createPage;
