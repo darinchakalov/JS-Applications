@@ -20,6 +20,7 @@ async function onCreate(e) {
 	}
 	let response = await createIdea(idea)
 	if (response !== undefined) {
+		form.reset()
 		showDashPage()
 	}
 }

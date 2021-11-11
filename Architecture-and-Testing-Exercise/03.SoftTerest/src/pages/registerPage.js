@@ -22,7 +22,6 @@ async function onSubmit(e) {
 		password: formData.get("password"),
 	};
 	let data = await userServices.registerRequest(registerData);
-	console.log(data.email);
 	if (data !== undefined) {
 		setAuthenticationData(data);
 		form.reset();

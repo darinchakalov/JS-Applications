@@ -13,7 +13,9 @@ export async function showDetailsPage(id) {
 	
 	showSection(detailsPage);
 	const deleteBtn = detailsPage.querySelector("button");
-	deleteBtn.addEventListener("click", onDelete);
+	if (deleteBtn) {
+		deleteBtn.addEventListener("click", onDelete);
+	}
 }
 
 export async function onDelete(e) {

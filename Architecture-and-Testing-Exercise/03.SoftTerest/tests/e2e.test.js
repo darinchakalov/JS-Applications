@@ -41,7 +41,7 @@ describe('E2E tests', function () {
 
     before(async () => {
         if (DEBUG) {
-            browser = await chromium.launch({ headless: false, slowMo: 500 });
+            browser = await chromium.launch({ headless: false, slowMo: 200 });
         } else {
             browser = await chromium.launch();
         }

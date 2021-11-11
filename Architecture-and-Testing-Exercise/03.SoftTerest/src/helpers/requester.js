@@ -1,40 +1,14 @@
-export async function requester(url, method, body, isAuthorized, skipResult) {
-	try {
-		if (method === undefined) {
-			method = "GET";
-		}
-
-		let headers = {};
-		if (["post", "put", "patch"].includes(method.toLowerCase())) {
-			headers["Content-Type"] = "application/json";
-		}
-
-		if (isAuthorized) {
-			headers["X-Authorization"] = sessionStorage.getItem("authToken");
-		}
-
-		let options = {
-			method,
-			headers,
-		};
-
-		if (body !== undefined) {
-			options.body = JSON.stringify(body);
-		}
-		let response = await fetch(url, options);
-
-		if (!response.ok) {
-			let message = await response.json();
-			throw new Error(`${response.status}: ${response.statusText}\n${message}`);
-		}
-		let result = undefined;
-		if (!skipResult) {
-			result = await response.json();
-		}
-
-		return result;
-	} catch (err) {
-        console.log(err);
-		alert(err);
-	}
+export async function requester(uri, options) {
+    const baseUrl = 'http://localhost:3030'
+    const response = await fetch(baseUrl+uri, options)
+    if (response.ok === false) {
+        const err = await response.json()
+        console.error(err.message)
+        return
+    }
+    try {
+        return await response.json()
+    } catch (err) {
+        return response
+    }
 }

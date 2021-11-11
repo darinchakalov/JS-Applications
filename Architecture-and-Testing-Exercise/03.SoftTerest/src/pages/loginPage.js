@@ -20,7 +20,6 @@ async function onSubmit(e) {
 		password: formData.get("password"),
 	};
 	let data = await userServices.loginRequest(loginData)
-	console.log(data);
 	if (data !== undefined) {
 		setAuthenticationData(data)
 		loginForm.reset()
