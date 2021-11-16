@@ -1,4 +1,3 @@
-import { render } from "../node_modules/lit-html/lit-html.js";
 import booksService from "./services/booksService.js";
 import { bookLibraryTemplate, allBooksTemplate } from "./templates/bookTemplate.js";
 
