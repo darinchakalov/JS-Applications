@@ -1,0 +1,3 @@
+formData.getAll()
+
+Object.fromEntries(new FormData(e.target)

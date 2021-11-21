@@ -10,7 +10,8 @@ async function submitHandler(context, e) {
 		password: formData.get("password"),
 	};
 	let loginResult = await authService.login(user);
-	context.page.redirect("/dashboard");
+	//change the redirect to my team once it is done
+	context.page.redirect("/");
 }
 
 function showView(context) {

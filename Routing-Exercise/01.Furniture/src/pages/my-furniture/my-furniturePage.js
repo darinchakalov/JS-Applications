@@ -1,5 +1,5 @@
 import authService from "../../services/authService.js";
-import { getAllFurniture, getMyFurniture } from "../../services/furnitureServices.js";
+import { getMyFurniture } from "../../services/furnitureServices.js";
 import { myFurnitureTemplate } from "./my-furnitureTemplate.js";
 
 async function showView(context) {
