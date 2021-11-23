@@ -1,36 +1,44 @@
 import { get, post } from "../api/requester.js";
 
 function isLoggedIn() {
-	return sessionStorage.getItem('authToken') !== null;
+	return sessionStorage.getItem("authToken") !== null;
 }
 
 async function login(userData) {
 	let response = await post("/users/login", userData);
-	setUserData(response);
+	if (!response.message) {
+		setUserData(response);
+	}
+	return response;
 }
 
 async function register(userData) {
 	let response = await post("/users/register", userData);
-	setUserData(response);
+	if (!response.message) {
+		setUserData(response);
+	}
+	return response;
 }
 
 async function logout() {
 	let response = await get("/users/logout");
 	if (response !== undefined) {
 		sessionStorage.clear();
+		return response;
 	}
 }
 
 function setUserData(data) {
-	//set username if needed as well
+	sessionStorage.setItem("username", data.username);
 	sessionStorage.setItem("authToken", data.accessToken);
-	sessionStorage.setItem("username", data.email);
+	sessionStorage.setItem("email", data.email);
 	sessionStorage.setItem("userId", data._id);
+	sessionStorage.setItem("gender", data.gender);
 }
 
 export default {
 	login,
 	register,
 	logout,
-	isLoggedIn
+	isLoggedIn,
 };

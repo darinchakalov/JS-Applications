@@ -19,7 +19,7 @@ export function showNav(template) {
 
 export function renderMiddleware(context, next) {
     context.renderNav = showNav;
-    context.revderView = showView;
+    context.renderView = showView;
 
     next();
 }

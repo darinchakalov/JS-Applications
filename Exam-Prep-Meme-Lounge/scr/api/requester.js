@@ -1,3 +1,4 @@
+
 const host = "http://localhost:3030";
 
 async function request(uri, options) {
@@ -8,7 +9,8 @@ async function request(uri, options) {
 				sessionStorage.clear();
 			}
 			const error = await response.json();
-			throw new Error(error.message);
+			// throw new Error(error.message);
+			return error
 		}
 
 		if (response.status === 204) {
@@ -17,7 +19,8 @@ async function request(uri, options) {
 			return response.json();
 		}
 	} catch (err) {
-		alert(err.message);
+		// alert(err.message);
+		return err;
 		throw err;
 	}
 }
