@@ -4,5 +4,9 @@ let navigationTemplate = () => html``;
 
 
 export function renderNavigation(context) {
-    return navigationTemplate()
+    async function onLogout() {
+        await authServices.logout()
+        context.page.redirect('/')
+    }
+	return navigationTemplate(authServices.isLoggedIn(), onLogout);
 }

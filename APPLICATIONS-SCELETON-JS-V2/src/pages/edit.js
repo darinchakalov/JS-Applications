@@ -1,4 +1,3 @@
-import carListServices from "../services/carListServices.js";
 import { html } from "../utils.js";
 
 let editTemplate = (car, onEdit) => html``;
