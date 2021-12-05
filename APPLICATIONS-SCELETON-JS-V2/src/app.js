@@ -1,6 +1,7 @@
 import { page } from "./utils.js";
 
-
+import { initializeNav, naviagationMiddleware } from "./renderers/navigationMiddleware.js";
+import { initializeMain, renderMiddleware } from "./renderers/renderMiddleware.js";
 
 let mainSection = document.getElementById(""); 
 let navSection = document.getElementById("");

@@ -1,10 +1,9 @@
 import { html } from "../utils.js";
 
-let editTemplate = (car, onEdit) => html``;
+let editTemplate = (onEdit) => html``;
 
 export async function renderEditPage(context) {
 	let carId = context.params.id;
-	let currentCar = await carListServices.getSingleCar(carId);
 
 	function onEdit(e) {
 		e.preventDefault();
@@ -15,5 +14,5 @@ export async function renderEditPage(context) {
 		}
 		context.page.redirect("/");
 	}
-	context.renderView(editTemplate(currentCar, onEdit));
+	context.renderView(editTemplate( onEdit));
 }
